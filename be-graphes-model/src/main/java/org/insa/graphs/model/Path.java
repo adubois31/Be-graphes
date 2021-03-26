@@ -217,7 +217,6 @@ public class Path {
     	for (Arc arc: this.getArcs()) {
     	     length += arc.getLength();
     	}
-    	System.out.println(length);
         return length;
     }
 
@@ -232,8 +231,11 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public double getTravelTime(double speed) {
-        // TODO:
-        return 0;
+    	float Time = 0;
+    	for (Arc arc: this.getArcs()) {
+    	     Time += arc.getTravelTime(speed);
+    	}
+        return Time;
     }
 
     /**
