@@ -197,13 +197,31 @@ public class Path {
      * </ul>
      * 
      * @return true if the path is valid, false otherwise.
-     * 
-     * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-        return false;
-    }
+        boolean Test = false;
+        if (this.isEmpty() | this.size()==1) 
+        {
+        	Test=true;
+        }
+        else if(this.getArcs().get(0).getOrigin()==this.getOrigin()) 
+        {
+        	Test=true;
+        	for (int i=0;i<(this.size()-2);i++) 
+        	{
+        		if(this.getArcs().get(i).getDestination()==this.getArcs().get(i+1).getOrigin())
+        			{
+        				Test = Test&true;
+        			}
+        		else 
+        		{
+        			Test=Test&false;
+        		}
+        		}
+        	}
+        
+        return Test;
+    }	
 
     /**
      * Compute the length of this path (in meters).
@@ -242,8 +260,7 @@ public class Path {
      * on every arc.
      * 
      * @return Minimum travel time to travel this path (in seconds).
-     * 
-     * @deprecated Need to be implemented.
+     *
      */
     public double getMinimumTravelTime() {
     	float MinTime = 0;
