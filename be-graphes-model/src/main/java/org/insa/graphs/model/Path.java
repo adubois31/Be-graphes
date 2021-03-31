@@ -35,8 +35,44 @@ public class Path {
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
+        Path path;
+        double Min_time=1000000000.0;
+        Arc Arc_actuel=null;
+        int successeur = 0;
+        if (nodes.size()==0) 
+        {
+        	path = new Path(graph);
+        }
+        else if (nodes.size()==1)
+        {
+        	path = new Path(graph,nodes.get(0));
+        }
+        else 
+        {
+	        for(int i = 0; i<(nodes.size()-1); i++ )
+	        {
+	        	successeur = 0;
+	        	Arc_actuel=null;
+	        	Min_time=10000000.0;
+	        	for(int j=0; j<nodes.get(i).getNumberOfSuccessors() ;j++) 
+	        	{
+	        		if(nodes.get(i).getSuccessors().get(j).getMinimumTravelTime()<Min_time && nodes.get(i).getSuccessors().get(j).getDestination()==nodes.get(i+1)) 
+	        		{
+	        			successeur=1;
+	        			Min_time=nodes.get(i).getSuccessors().get(j).getMinimumTravelTime();
+	        			Arc_actuel=nodes.get(i).getSuccessors().get(j);
+	        		}
+	        		if (successeur==0) 
+	        		{
+	        			throw new IllegalArgumentException ("Pas de successeur existant");
+	        		}
+	        	}
+	        	arcs.add(Arc_actuel);
+	        }
+	        path=new Path(graph, arcs);
+        }
         // TODO:
-        return new Path(graph, arcs);
+        return path;
     }
 
     /**
@@ -51,13 +87,48 @@ public class Path {
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
      * 
-     * @deprecated Need to be implemented.
      */
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
+        Path path;
+        float Min_length;
+        Arc Arc_actuel=null;
+        int successeur = 0;
+        if (nodes.size()==0) 
+        {
+        	path = new Path(graph);
+        }
+        else if (nodes.size()==1)
+        {
+        	path = new Path(graph,nodes.get(0));
+        }
+        else 
+        {
+	        for(int i = 0; i<(nodes.size()-1); i++ )
+	        {
+	        	successeur = 0;
+	        	Arc_actuel=null;
+	        	Min_length=10000000.F;
+	        	for(int j=0; j<nodes.get(i).getNumberOfSuccessors() ;j++) 
+	        	{
+	        		if(nodes.get(i).getSuccessors().get(j).getLength()<Min_length && nodes.get(i).getSuccessors().get(j).getDestination()==nodes.get(i+1)) 
+	        		{
+	        			successeur=1;
+	        			Min_length=nodes.get(i).getSuccessors().get(j).getLength();
+	        			Arc_actuel=nodes.get(i).getSuccessors().get(j);
+	        		}
+	        		if (successeur==0) 
+	        		{
+	        			throw new IllegalArgumentException ("Pas de successeur existant");
+	        		}
+	        	}
+	        	arcs.add(Arc_actuel);
+	        }
+	        path=new Path(graph, arcs);
+        }
         // TODO:
-        return new Path(graph, arcs);
+        return path;
     }
 
     /**
