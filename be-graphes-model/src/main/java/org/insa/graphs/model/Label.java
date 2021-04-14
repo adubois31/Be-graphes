@@ -2,8 +2,8 @@ package org.insa.graphs.model;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-@SuppressWarnings("rawtypes")
-final public class Label implements Comparable {
+
+final public class Label implements Comparable<Label> {
 	
 	private Node Sommet_courant;
 	
@@ -18,39 +18,14 @@ final public class Label implements Comparable {
 	public Node getSommet_courant() {
 		return Sommet_courant;
 	}
-	public static ArrayList<Label>Table_Label=new ArrayList<Label>();
+	public static Label Table_Label[];
 	
-	public Label(Node n, boolean father) 
+	public Label(Node n, boolean marked, float Cout, Arc Father) 
 	{
-		if (father) 
-		{
-			this.Cost=0;
-		}
-		else 
-		{
-			this.Cost=Float.POSITIVE_INFINITY;
-		}
-		this.marque=father;
-		this.Pere=null;
 		this.Sommet_courant=n;
-	}
-	
-	public static Label getLabel(Node n) throws NoSuchElementException
-	{
-		Label l = null;
-		for (int i = 0; i<Label.Table_Label.size(); i++) 
-		{
-			if (Label.Table_Label.get(i).Sommet_courant == n) 
-			{
-				l = Label.Table_Label.get(i);
-				break;
-			}
-		}
-		if (l==null) 
-		{
-			throw new NoSuchElementException();
-		}
-		return l;
+		this.marque=marked;
+		this.Cost=Cout;
+		this.Pere=Father;
 	}
 	
 
