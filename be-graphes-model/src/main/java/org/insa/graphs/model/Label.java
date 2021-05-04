@@ -1,7 +1,4 @@
 package org.insa.graphs.model;
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
-
 
 final public class Label implements Comparable<Label> {
 	
