@@ -1,6 +1,6 @@
 package org.insa.graphs.model;
 
-final public class Label implements Comparable<Label> {
+public class Label implements Comparable<Label> {
 	
 	private Node Sommet_courant;
 	
@@ -74,11 +74,15 @@ final public class Label implements Comparable<Label> {
 	public void setPere(Arc pere) {
 		Pere = pere;
 	}
+	
+	public float getTotalCost(){
+		return Cost;
+	}
 
 	@Override
 	public int compareTo (Label l) {
 		
-		return Float.compare(this.getCost(), l.getCost());
+		return Float.compare(this.getTotalCost(), l.getTotalCost());
 	}
 
 

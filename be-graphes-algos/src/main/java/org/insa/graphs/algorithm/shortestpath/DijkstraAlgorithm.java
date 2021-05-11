@@ -13,6 +13,13 @@ import org.insa.graphs.algorithm.utils.BinaryHeap;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
+	protected void insert (BinaryHeap<Label> BH, Node n, boolean marked, float Cout, Arc Father, float estimated_cost) {
+		Label lab = new Label(n,marked,Cout,null);
+		BH.insert(lab);
+		Label.Table_Label[n.getId()]=lab;
+	}
+	
+	
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);
     }
@@ -41,6 +48,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         		l = new Label(n,true,0,null);
         		BH.insert(l);
         		Label.Table_Label[n.getId()]=l;
+        		insert(BH,n,true,(float)0,null,(float) 0.0);
         	}
         }
         //Iterations
@@ -68,9 +76,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         		
         		if (Label.Table_Label[node_dest.getId()]==null) //création du label (node jamais rencontré auparavant
         		{
-        			Label lab = new Label(node_dest,false,(float)(Label_Origine.getCost()+ data.getCost(arc)),arc);
-        			Label.Table_Label[node_dest.getId()]=lab;
-        			BH.insert(lab);	
+        			insert(BH,node_dest,false,(float)(Label_Origine.getCost()+ data.getCost(arc)),arc,(float)node_dest.getPoint().distanceTo(data.getDestination().getPoint()));
         		}
         		else 
         		{
