@@ -18,7 +18,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         super(data);
     }
     
-    protected void insert(BinaryHeap<Label> BH, Node n, boolean Marked, float cost, Arc father, float estimated_cost) {
+    protected void insert(BinaryHeap<Label> BH, Node n, boolean Marked, float cost, Arc father, ShortestPathData data) {
     	Label l;
 		l = new Label(n, Marked, cost, father);
 		BH.insert(l);
@@ -42,7 +42,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         // initialization
         Label.Table_Label = new Label[graph.getNodes().size()];
         Node n = data.getOrigin();
-        insert(BH, n, true, (float)0.0, null, (float)n.getPoint().distanceTo(data.getDestination().getPoint()));
+        insert(BH, n, true, (float)0.0, null,data);
         
         //iterations
         while (Nb_Marked_Nodes != nbNodes && !BH.isEmpty()){
@@ -62,7 +62,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                 
         		Node N_Destination = a.getDestination();
 				if (Label.Table_Label[N_Destination.getId()] == null) {
-					insert(BH, N_Destination, false, (float) (L_Origin.getCost() + data.getCost(a)), a, (float)N_Destination.getPoint().distanceTo(data.getDestination().getPoint()));
+					insert(BH, N_Destination, false, (float) (L_Origin.getCost() + data.getCost(a)), a, data);
 				}
 				else {
 					if (Label.Table_Label[N_Destination.getId()].isMarque() == false) {
