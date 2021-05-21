@@ -29,6 +29,15 @@ public class TestDijkstraAlgorithm {
 	
 	protected static double cost;
 	
+	public static ShortestPathSolution Solution_generation (ShortestPathData Data){
+		DijkstraAlgorithm Dijkstra = new DijkstraAlgorithm(Data);
+		ShortestPathSolution Solution = Dijkstra.doRun();
+		
+		
+		return Solution;
+		
+	}
+	
 	@BeforeClass
     public static void initAll() throws Exception{
 		
@@ -50,8 +59,7 @@ public class TestDijkstraAlgorithm {
 		oneNodePath = new Path(graph, node);
 		
 		ShortestPathData data = new ShortestPathData(graph, node, node, ArcInspectorFactory.getAllFilters().get(0));
-		DijkstraAlgorithm Dijkstra = new DijkstraAlgorithm(data);
-		oneNodeSolution = Dijkstra.doRun();
+		oneNodeSolution = Solution_generation (data);
 		
 		//Init simple path
 		cost = 0;
@@ -65,26 +73,22 @@ public class TestDijkstraAlgorithm {
 		}
 		
 		data = new ShortestPathData(graph, graph.getNodes().get(5), graph.getNodes().get(9), ArcInspectorFactory.getAllFilters().get(0));
-		Dijkstra = new DijkstraAlgorithm(data);
-		simplePathSolution = Dijkstra.doRun();
+		simplePathSolution = Solution_generation (data);
 		
 		//Init medium path
 		data = new ShortestPathData(graph_insa, graph_insa.getNodes().get(805), graph_insa.getNodes().get(70), ArcInspectorFactory.getAllFilters().get(0));
-		Dijkstra = new DijkstraAlgorithm(data);
-		mediumPathSolution = Dijkstra.doRun();
+		mediumPathSolution = Solution_generation (data);
 		
 		BellmanFordAlgorithm BF = new BellmanFordAlgorithm(data);
 		BFmediumSolution = BF.doRun();
 		
 		//Init Infeasible path
 		data = new ShortestPathData(graph_insa, graph_insa.getNodes().get(75), graph_insa.getNodes().get(1255), ArcInspectorFactory.getAllFilters().get(0));
-		Dijkstra = new DijkstraAlgorithm(data);
-		InfeasiblePathSolution = Dijkstra.doRun();
+		InfeasiblePathSolution = Solution_generation (data);
 		
 		//Init big path
 		data = new ShortestPathData(graph_France, graph_France.getNodes().get(4551603), graph_France.getNodes().get(4042512), ArcInspectorFactory.getAllFilters().get(0));
-		Dijkstra = new DijkstraAlgorithm(data);
-		BigPathSolution = Dijkstra.doRun();
+		BigPathSolution = Solution_generation (data);
 		
 	}
 	
