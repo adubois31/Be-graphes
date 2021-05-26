@@ -49,10 +49,7 @@ public class TestDijkstraAlgorithm {
 		mapName = "/home/a_dubois/Bureau/3_MIC/BE-graphes/Be-graphes/Maps/insa.mapgr";
 		reader = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
 		graph_insa = reader.read();
-		//get graph of map 
-		mapName = "/home/a_dubois/Bureau/3_MIC/BE-graphes/Be-graphes/Maps/france.mapgr";
-		reader = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
-		graph_France = reader.read();
+
 		
 		//init OneNodePath
 		Node node = graph.getNodes().get(0);
@@ -85,11 +82,6 @@ public class TestDijkstraAlgorithm {
 		//Init Infeasible path
 		data = new ShortestPathData(graph_insa, graph_insa.getNodes().get(75), graph_insa.getNodes().get(1255), ArcInspectorFactory.getAllFilters().get(0));
 		InfeasiblePathSolution = Solution_generation (data);
-		
-		//Init big path
-		data = new ShortestPathData(graph_France, graph_France.getNodes().get(4551603), graph_France.getNodes().get(4042512), ArcInspectorFactory.getAllFilters().get(0));
-		BigPathSolution = Solution_generation (data);
-		
 	}
 	
 	@Test
