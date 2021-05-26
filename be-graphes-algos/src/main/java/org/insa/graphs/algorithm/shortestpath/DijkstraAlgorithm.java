@@ -19,11 +19,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     }
     
     protected void insert(BinaryHeap<Label> BH, Node n, boolean Marked, float cost, Arc father, ShortestPathData data) {
-    	Label l;
-		l = new Label(n, Marked, cost, father);
-		BH.insert(l);
-		Label.Table_Label[n.getId()] = l;
-		notifyNodeReached(l.getSommet_courant());
+    	Label lab;
+		lab = new Label(n, Marked, cost, father);
+		BH.insert(lab);
+		Label.Table_Label[n.getId()] = lab;
+		notifyNodeReached(lab.getSommet_courant());
     }
     
     @Override
@@ -39,39 +39,45 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         final int nbNodes = graph.size();
         int Nb_Marked_Nodes = 0;
         
-        // initialization
+        // initialisation
         Label.Table_Label = new Label[graph.getNodes().size()];
-        Node n = data.getOrigin();
-        insert(BH, n, true, (float)0.0, null,data);
+        Node node = data.getOrigin();
+        insert(BH, node, true, (float)0.0, null,data);
         
         //iterations
-        while (Nb_Marked_Nodes != nbNodes && !BH.isEmpty()){
-        	Label L_Origin = BH.findMin();
+        while (Nb_Marked_Nodes != nbNodes && !BH.isEmpty())
+        {
+        	Label Lab_origine = BH.findMin(); // recuperation point le plus proche
         	BH.deleteMin();
-        	L_Origin.setMarque(true);
+        	Lab_origine.setMarque(true);
         	Nb_Marked_Nodes++;
-        	notifyNodeMarked(L_Origin.getSommet_courant());
-        	if (L_Origin.getSommet_courant() == data.getDestination()) {
+        	notifyNodeMarked(Lab_origine.getSommet_courant());
+        	if (Lab_origine.getSommet_courant() == data.getDestination()) //sortie boucle si on est arrive à destination
+        	{
         		break;
         	}
-        	for (Arc a : L_Origin.getSommet_courant().getSuccessors()) {
-        		// Small test to check allowed roads...
-                if (!data.isAllowed(a)) {
+        	for (Arc successeur : Lab_origine.getSommet_courant().getSuccessors()) 
+        	{
+        		// Test verification si la route est authorisée.
+                if (!data.isAllowed(successeur)) 
+                {
                     continue;
                 }
                 
-        		Node N_Destination = a.getDestination();
-				if (Label.Table_Label[N_Destination.getId()] == null) {
-					insert(BH, N_Destination, false, (float) (L_Origin.getCost() + data.getCost(a)), a, data);
+        		Node N_Destination = successeur.getDestination();
+				if (Label.Table_Label[N_Destination.getId()] == null) // si le sommet était à l'infini on lui cree un label
+				{
+					insert(BH, N_Destination, false, (float) (Lab_origine.getCost() + data.getCost(successeur)), successeur, data);
 				}
-				else {
-					if (Label.Table_Label[N_Destination.getId()].isMarque() == false) {
-	        			if (Label.Table_Label[N_Destination.getId()].getCost() > (L_Origin.getCost() + data.getCost(a))) {
-	        				BH.remove(Label.Table_Label[N_Destination.getId()]);        					
-	        				Label.Table_Label[N_Destination.getId()].setCost((float) (L_Origin.getCost() + data.getCost(a)));
-	        				Label.Table_Label[N_Destination.getId()].setPere(a);
-	        				BH.insert(Label.Table_Label[N_Destination.getId()]);
-	        			}
+				else 
+				{
+					if ((Label.Table_Label[N_Destination.getId()].isMarque() == false)&&(Label.Table_Label[N_Destination.getId()].getCost() > (Lab_origine.getCost() + data.getCost(successeur)))) 
+					{//verification que le sommet n'est pas marque et que le cout en passant plutot par ce sommet est plus petit
+	        			BH.remove(Label.Table_Label[N_Destination.getId()]); //suppression du label dans le tas binaire       					
+	        			Label.Table_Label[N_Destination.getId()].setCost((float) (Lab_origine.getCost() + data.getCost(successeur)));
+	        			Label.Table_Label[N_Destination.getId()].setPere(successeur);
+	        			BH.insert(Label.Table_Label[N_Destination.getId()]); // re insertion du nouveau cout associe au node de destination
+	        			
 	        		}
 				}
         		
@@ -98,7 +104,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	Collections.reverse(arcs);
         	
         	// Create the final solution.
-        	if (arcs.size() == 0) {
+        	if (arcs.size() == 0) {//cas où la destination et l'origine sont le même sommet
         		solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, data.getOrigin()));
         	}
         	else {
